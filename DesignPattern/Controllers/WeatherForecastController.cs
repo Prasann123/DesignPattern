@@ -1,4 +1,5 @@
 using DesignPattern.Creational_Design_Pattern.AbstractFactory;
+using DesignPattern.Creational_Design_Pattern.Builder_Design_Pattern;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DesignPattern.Controllers
@@ -22,6 +23,18 @@ namespace DesignPattern.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            HolidayPackageDirector director = new HolidayPackageDirector();
+            HolidayPAckageBuilder builder = new BudgetHolidayPackage();
+            HolidayPAckageBuilder luxuryBuilder = new LuxuryHolidayPackage();
+
+            HolidayPackage luxuryHolidayPackage = director.BuildHolidayPackage(luxuryBuilder);
+            HolidayPackage holidayPackage = director.BuildHolidayPackage(builder);
+            holidayPackage.display();
+            luxuryHolidayPackage.display();
+
+
+
+
 
             IAuthentication_Factory factory = new AuthenticationFactory.AppleAuthentication();
 
