@@ -3,7 +3,9 @@ using DesignPattern.Behaviour_Design_Pattern.Observer_Design_pattern;
 using DesignPattern.Creational_Design_Pattern.AbstractFactory;
 using DesignPattern.Creational_Design_Pattern.Builder_Design_Pattern;
 using Microsoft.AspNetCore.Mvc;
-
+using static DesignPattern.Behaviour_Design_Pattern.Chain_of_Responsibility_Pattern.ChainOfResponsibility;
+using static DesignPattern.Behaviour_Design_Pattern.Strategy_Design_pattern.DtrategyDesignPattern_Payment_processing;
+using static DesignPattern.Structural_Design_Pattern.FileConversion_Adaptern;
 namespace DesignPattern.Controllers
 {
     [ApiController]
@@ -25,6 +27,38 @@ namespace DesignPattern.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+            PDFConversion pdfConversion = new PDFConversion();
+
+            IFileConversion fileConversion = new PDFAdapter(pdfConversion);
+
+            fileConversion.ConvertFile();
+
+            fileConversion.FormatFile();
+
+
+            PaymentProcessor paymentProcessor = new PaymentProcessor();
+            paymentProcessor.SetPaymentstrategy("CreditCard");
+            paymentProcessor.ProcessPayment(100);
+
+            paymentProcessor.SetPaymentstrategy("Paypal");
+            paymentProcessor.ProcessPayment(200);
+
+            paymentProcessor.SetPaymentstrategy("CryptoCurrency");
+            paymentProcessor.ProcessPayment(300);
+
+
+
+
+            ApproverHandler manager = new Manager();
+            ApproverHandler director1 = new Director();
+            ApproverHandler ceo = new CEO();
+
+            manager.SetNextHandler(director1);
+            director1.SetNextHandler(ceo);
+
+            manager.HandleApprover(5000);
+
+            director1.HandleApprover(10000);
 
             IRestaurantActionListener preparePizza = new ActionPreparePizza();
             IRestaurantActionListener cookBurger = new ActionCookBurger();
